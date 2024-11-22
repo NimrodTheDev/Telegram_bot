@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-teloxide = { version = "0.9", features = ["macros"] }
+teloxide = { version = "0.13.0", features = ["macros"]}
 tokio = { version = "1", features = ["full"] }
 dotenv = "0.15"
 reqwest = { version = "0.11", features = ["json"] }
