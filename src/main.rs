@@ -9,10 +9,24 @@ use teloxide::Bot;
 
 #[derive(BotCommands)]
 enum cmd{
-    #[command(description = "display this text.")]
+    #[command(description = "Show a list of all commands.")]
+    start,
+    #[command(description = "Learn about sei and it's features.")]
     aboutsei,
-    #[command(description = "display this text.")]
-    community
+    #[command(description = "Join and collaborate with the Sei community.")]
+    community,
+    #[command(description = "Guides users through waller creation, sending/receiving sei and exporting private key... Coming soon.")]
+    guide,
+    #[command(description = "Guide on how to buy sei with SimpleSwap.io... Coming soon.")]
+    buysei,
+    #[command(description = "Guide on how to export wallet keys and provide download link... Coming soon.")]
+    exportwallet,
+    #[command(description = "Provides a list of games on the sei network... Coming soon.")]
+    games,
+    #[command(description = "Swap tokens on dragon swap... Coming soon.")]
+    swap,
+    #[command(description = "A chatbot to answer all sei based question... Coming soon.")]
+    chatbot,
 }
 
 #[tokio::main]
@@ -24,13 +38,28 @@ async fn main()-> Result<(), Box<dyn std::error::Error>> {
             println!("Homepage");
             if let Ok(command) = cmd::parse(s, "TheSeiNewbieBot") {
                 println!("Homepage2");
-                let data = get_sei_info().await?;
-                match command {
-                    cmd::aboutsei =>{
-                        bot.send_message(msg.chat.id, about_sei(&data)).await;
+                let data = get_sei_info().await;
+                match data {
+                    Ok(data )=>{
+                        match command {
+                            cmd::aboutsei =>{
+                                bot.send_message(msg.chat.id, about_sei(&data)).await;
+                            }
+                            cmd::community =>{
+                                bot.send_message(msg.chat.id, community(&data)).await;
+                            }
+                            cmd::start =>{
+                                let help_text = cmd::descriptions();
+                                bot.send_message(msg.chat.id, help_text.to_string()).await;
+                            }
+                            _=>{
+                                bot.send_message(msg.chat.id, "Still working on the command Dev need rest ejor.").await;
+                            }
+                        }
                     }
-                    cmd::community =>{
-                        bot.send_message(msg.chat.id, community(&data)).await;
+                    Err(err)=>{
+                        println!("{err}");
+                        bot.send_message(msg.chat.id, "Error fetching data").await;
                     }
                 }
             };
@@ -39,12 +68,6 @@ async fn main()-> Result<(), Box<dyn std::error::Error>> {
     }).await;
     Ok(())
 }
-
-// async fn handler(bot: Bot, message: Message, command: cmd)-> (){
-//     println!("Homepage3");
-    
-//     ()
-// }
 
 use reqwest::Error;
 use serde::Deserialize;
@@ -92,7 +115,6 @@ pub struct Prices {
 async fn get_sei_info() -> Result<CoinGeckoResponse, Error> {
     // let (id, _symbol, _name) = get_coin_data("sei-network".to_string()).await?;
     let url = format!("https://api.coingecko.com/api/v3/coins/{}","sei-network");
-    let response = reqwest::get(&url).await?;
     let response: CoinGeckoResponse = reqwest::get(url).await?.json::<CoinGeckoResponse>().await?;
     Ok(response)
 }
