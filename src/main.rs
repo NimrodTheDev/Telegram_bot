@@ -1,3 +1,4 @@
+mod X_Auth;
 use std::fmt::Write;
 
 use teloxide::prelude::*;
@@ -32,6 +33,7 @@ enum cmd{
 #[tokio::main]
 async fn main()-> Result<(), Box<dyn std::error::Error>> {
     // get_sei_info().await;
+    X_Auth::twitter().await;
     let bot = Bot::from_env();
     teloxide::repl(bot, |msg: Message, bot: Bot| async move{
         if let Some(s) = msg.text() {
