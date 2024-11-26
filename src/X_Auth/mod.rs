@@ -16,10 +16,9 @@ struct FollowerResponse {
 
 pub async fn twitter() -> Result<(), Box<dyn std::error::Error>> {
     // Replace with your Bearer token
-    let bearer_token = "YOUR_BEARER_TOKEN";
-    let user_id = "YOUR_USER_ID"; // Replace with the user ID whose followers you want to fetch
-
-    let url = format!("https://api.twitter.com/2/users/{}/followers", user_id);
+    let bearer_token = "AAAAAAAAAAAAAAAAAAAAAFqOxAEAAAAAupE3V9%2F1xD8%2BTKIa5JhQT6MxU%2Bs%3DCeoQtP9gJMFisvT4krqg3InItjY4WizoFPutOdbnUJi4j64nxC";
+    let user_id = "MartinNkemakol1"; // Replace with the user ID whose followers you want to fetch
+    let url = format!("https://api.x.com/1.1/followers/ids.json?screen_name={}", user_id);
     let client = Client::new();
 
     let response = client
