@@ -2,6 +2,7 @@ mod X_Auth;
 mod Coin_Data;
 mod Response;
 
+use serde::de::value;
 use teloxide::prelude::*;
 use teloxide::types::{InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, KeyboardMarkup, Message, UpdateKind};
 use teloxide::utils::command::BotCommands;
@@ -36,58 +37,22 @@ async fn main()-> Result<(), Box<dyn std::error::Error>> {
     // get_sei_info().await;
     // X_Auth::twitter().await;
     let bot = Bot::from_env();
-    teloxide::repl(bot, |bot: Bot, update: Update| async move{
-        println!("{:?}", update);
-        match update.kind {
-            UpdateKind::Message(msg) =>{
-                if let Some(s) = msg.text() {
-                    println!("Homepage");
-                    if let Ok(command) = cmd::parse(s, "TheSeiNewbieBot") {
-                        println!("Homepage2");
-                        let data = Coin_Data::get_sei_info().await;
-                        match data {
-                            Ok(data )=>{
-                                match command {
-                                    cmd::aboutsei =>{
-                                        bot.send_message(msg.chat.id, Response::about_sei(&data)).await;
-                                    }
-                                    cmd::community =>{
-                                        bot.send_message(msg.chat.id, Response::community(&data)).await;
-                                    }
-                                    cmd::start =>{
-                                        // let help_text = cmd::descriptions();
-                                        let keyboard = InlineKeyboardMarkup::new(vec![
-                                            vec![
-                                                InlineKeyboardButton::callback("About sei", "/aboutsei"),
-                                                InlineKeyboardButton::callback("Join" ,"/community"),
-                                            ],
-                                        ]);
-                                        bot.send_message(msg.chat.id, Response::Help()).reply_markup(keyboard).await.unwrap();
-                                    }
-                                    _=>{
-                                        bot.send_message(msg.chat.id, "Still working on the command Dev need rest ejor.").await;
-                                    }
-                                }
-                            }
-                            Err(err)=>{
-                                println!("{err}");
-                                bot.send_message(msg.chat.id, "Error fetching data").await;
-                            }
-                        }
-                    };
-                }
-            }
-            UpdateKind::CallbackQuery(query)=>{
-                println!("Works");
-                if let Some(data) = query.clone().data {
-                    handle_callback(bot.clone(), query.clone(), data).await?;
-                }
-            }
-            _=>{
-                println!("W");
-            }
-        };
-        respond(())
+    teloxide::repl(bot, |bot: Bot, msg: Message| async move{
+        // println!("{:?}", update);
+        if let Some(s) = msg.text() {
+            if let Ok(command) = cmd::parse(s, "TheSeiNewbieBot") {
+                println!("Homepage2");
+                println!("Homepage");
+                handle_command(bot, msg.clone(), command).await;
+            }else{
+                let value: Vec<&str> = s.split_whitespace().collect();
+                let max_len = value.len();
+                let last_value = value[max_len - 1];    
+                if let Ok(command) = cmd::parse(last_value, "TheSeiNewbieBot"){
+                    handle_command(bot, msg.clone(), command).await;
+                };
+        }}
+    respond(())
     }).await;
     Ok(())
 }
@@ -117,4 +82,28 @@ async fn handle_callback(bot: Bot, query: CallbackQuery, data: String) -> Respon
     // Answer the callback query to remove the "loading" animation in the Telegram client
     bot.answer_callback_query(query.id).await?;
     Ok(())
+}
+
+async fn handle_command(bot: Bot, msg: Message, command: cmd){
+        match command {
+            cmd::aboutsei =>{
+                bot.send_message(msg.chat.id, Response::about_sei().await).await;
+            }
+            cmd::community =>{
+                bot.send_message(msg.chat.id, Response::community().await).await;
+            }
+            cmd::start =>{
+                // let help_text = cmd::descriptions();
+                let keyboard = InlineKeyboardMarkup::new(vec![
+                    vec![
+                        InlineKeyboardButton::switch_inline_query_current_chat("About sei","/aboutsei"),
+                        InlineKeyboardButton::switch_inline_query_current_chat("Join sei communtiy" ,"/community"),
+                    ],
+                ]);
+                bot.send_message(msg.chat.id, Response::Help()).reply_markup(keyboard).await.unwrap();
+            }
+            _=>{
+                bot.send_message(msg.chat.id, "Still working on the command Dev need rest ejor.").await;
+            }
+        }
 }
