@@ -179,17 +179,18 @@ Discord link: https://discord.com/invite/s3labs"
 }
 
 pub fn Help()-> String{
+    
     let mut Help = String::new();
     writeln!(&mut Help, "
-        🌟 Welcome to @TheSeiNewbieBot! 🌟
-    Hi there! I'm here to assist you with everything you need. Let's make things easier and more fun! 🚀
+    🌟 Welcome to @TheSeiNewbieBot! 🌟
+Hi there! I’m here to guide you through everything Sei-related. Whether you’re a beginner or looking to dive deeper, I’ve got your back! 🚀
 
-    📌 How to get started?
-     1️⃣ Follow us on Twitter for updates and exclusive content! 👉 https://x.com/TheSeiNewbiebot
-     2️⃣ Use the buttons below to explore commands and interact with me. 😊
+🔹 Getting Started
+1️⃣ Follow us on Twitter for the latest updates and exclusive content 👉 https://x.com/TheSeiNewbiebot.
+2️⃣ Use the buttons below to explore commands and interact with me. 😊
 
-    🤖 Commands
-        ⬇️ Here’s what I can do:
+🤖 What Can I Do?
+Tap the commands below to discover all the features and tools I offer! 🎉
     ").unwrap();
     Help
 }
