@@ -113,7 +113,50 @@ pub async fn community() -> String {
                 )
                 .unwrap();
             }
-        
+            writeln!(
+                &mut community_info, "
+communities 
+
+                Block 24 
+Block 24 is a community created with the primary goal of onboarding Nigerians into the world of crypto and SEI.
+* Founded by active Sei community members Midas and Cryptostew. 
+* Produces educational video content to enhance crypto understanding. 
+* Hosts 'Block Talk,' a weekly X space discussing various topics. 
+* Organizes IRL (In Real Life) events to engage and educate the community. 
+
+X link: https://x.com/Block24_
+
+discord link: https://discord.com/invite/PuT5Y4SqMx \n
+
+
+                Crossover Studios 
+A Web3 creative studio focusing on developing intellectual property through online content creation. 
+* What began as a few lighthearted animated videos on Twitter has rapidly expanded, with intentions to collaborate with additional creators and establish a small community of creators.
+
+X link: https://x.com/crossover_xo
+
+Discord link: https://discord.gg/rXVgq6swQx \n
+
+                Fuckers 
+THE COMMUNITY’S COMMUNITY!!! 
+* YRRRRR!!! 
+* FUCK AROUND N FIND OUT 
+* [REDACTED] OF [REDACTED] 
+
+X link: https://x.com/fuckersforlife
+
+Discord link: https://discord.com/invite/8PS9AaaqK3 \n
+
+
+                S3 Labs 
+First started as a community around those who enjoy Sei spaces. This is your hub to chat during spaces and ask questions of people on stage.
+
+It has grown a lot since then and now are a place for people to network within the Sei ecosystem. S3 also incubates NFT projects, empowering artists and collectors, as well as helps dApps get connected with users and vise versa. 
+
+X link: https://x.com/s3_labs?s=21&t=YJUDwtZOk1GgaJ7Bk7oAnA
+
+Discord link: https://discord.com/invite/s3labs"
+            ).unwrap();
             // Call to action
             writeln!(
                 &mut community_info,
