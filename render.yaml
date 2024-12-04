@@ -1,0 +1,6 @@
+services:
+  - type: worker
+    name: teloxide-bot
+    env: TELOXIDE_TOKEN="8063367617:AAEQDLrWCp5iq6bO4oYrSom6ETaXkUi240E"
+    buildCommand: "cargo build --release"
+    startCommand: "./target/release/your-bot-binary"
