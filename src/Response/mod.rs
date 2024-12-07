@@ -194,3 +194,35 @@ Tap the commands below to discover all the features and tools I offer! 🎉
     ").unwrap();
     Help
 }
+
+pub fn Guide()->String{
+    let mut guide = String::new();
+    writeln!(&mut guide, "
+    Welcome to the SEI Wallet Guide Bot! 🤖✨
+Here’s what I can help you with:
+🌟 Guides:
+
+You’ve got three handy options to explore your wallet journey:
+
+1️⃣ Wallet Creation 🛠️
+
+    Learn how to create your SEI wallet step-by-step! 🚀
+    From generating your recovery phrase 📝 to setting up your secure PIN, I’ll make sure you’re ready to manage your crypto assets with confidence.
+
+2️⃣ Send & Receive SEI 💸
+
+    Discover how to send SEI coins to friends or receive payments effortlessly. 🤝
+    I’ll guide you on how to scan QR codes, copy wallet addresses, and ensure your transactions are safe and smooth! 🔒⚡
+
+3️⃣ Export Private Key 🔑
+
+    Access your private key safely to back up or import your wallet.
+    I’ll share essential security tips 🛡️ to keep your key protected while maintaining control over your funds.
+
+🎯 How to Get Started?
+Tap a button below to dive into any guide and unlock the knowledge you need! 🌐💪
+
+☝️ Pro Tip: Always ensure your recovery phrase and private keys are stored securely, away from prying eyes! 👀🔒
+");
+guide
+}

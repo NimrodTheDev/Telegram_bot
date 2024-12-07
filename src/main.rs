@@ -2,6 +2,7 @@ mod X_Auth;
 mod Coin_Data;
 mod Response;
 
+use reqwest::Url;
 use serde::de::value;
 use teloxide::prelude::*;
 use teloxide::types::{InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, KeyboardMarkup, Message, UpdateKind};
@@ -18,8 +19,11 @@ enum cmd{
     aboutsei,
     #[command(description = "Join and collaborate with the Sei community.")]
     community,
-    #[command(description = "Guides users through waller creation, sending/receiving sei and exporting private key... Coming soon.")]
+    #[command(description = "Guides users through wallet creation, sending/receiving sei and exporting private key... Coming soon.")]
     guide,
+    wallet_guide,
+    buy_sell_guide,
+    private_key_guide,
     #[command(description = "Guide on how to buy sei with SimpleSwap.io... Coming soon.")]
     buysei,
     #[command(description = "Guide on how to export wallet keys and provide download link... Coming soon.")]
@@ -37,6 +41,8 @@ async fn main()-> Result<(), Box<dyn std::error::Error>> {
     // get_sei_info().await;
     // X_Auth::twitter().await;
     let bot = Bot::from_env();
+    let url = Url::parse("https://telegram-bot-4ngf.onrender.com").unwrap();
+    bot.set_webhook(url).await?;
     teloxide::repl(bot, |bot: Bot, msg: Message| async move{
         // println!("{:?}", update);
         if let Some(s) = msg.text() {
@@ -98,9 +104,22 @@ async fn handle_command(bot: Bot, msg: Message, command: cmd){
                     vec![
                         InlineKeyboardButton::switch_inline_query_current_chat("About sei","/aboutsei"),
                         InlineKeyboardButton::switch_inline_query_current_chat("Join sei communtiy" ,"/community"),
+                        InlineKeyboardButton::switch_inline_query_current_chat("Join sei communtiy" ,"/guide"),
                     ],
                 ]);
                 bot.send_message(msg.chat.id, Response::Help()).reply_markup(keyboard).await.unwrap();
+            }
+            cmd::guide=>{
+                let keyboard = InlineKeyboardMarkup::new(vec![
+                    vec![
+                        InlineKeyboardButton::switch_inline_query_current_chat("Wallet creation","/wallet_guide"),
+                        InlineKeyboardButton::switch_inline_query_current_chat("Send & Receive SEI" ,"/buy_sell_guide"),
+                    ],
+                    vec![
+                        InlineKeyboardButton::switch_inline_query_current_chat("Export Private Key" ,"/private_key_guide"),
+                    ]
+                ]);
+                bot.send_message(msg.chat.id, Response::Guide()).reply_markup(keyboard).await.unwrap();
             }
             _=>{
                 bot.send_message(msg.chat.id, "Still working on the command Dev need rest ejor.").await;
